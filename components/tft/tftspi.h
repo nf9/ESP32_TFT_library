@@ -136,7 +136,7 @@
 //     for example the one on ESP-WROWER-KIT ###
 // #############################################
 #define TFT_INVERT_ROTATION 0
-#define TFT_INVERT_ROTATION1 0
+#define TFT_INVERT_ROTATION1 1
 
 // ################################################
 // ### SET TO 0X00 FOR DISPLAYS WITH RGB MATRIX ###
@@ -153,9 +153,9 @@
 // Any other valid pin combination can be used
 #define PIN_NUM_MISO 19		// SPI MISO
 #define PIN_NUM_MOSI 23		// SPI MOSI
-#define PIN_NUM_CLK  18		// SPI CLOCK pin
-#define PIN_NUM_CS   5		// Display CS pin
-#define PIN_NUM_DC   26		// Display command/data pin
+#define PIN_NUM_CLK  5		// SPI CLOCK pin
+#define PIN_NUM_CS   16		// Display CS pin
+#define PIN_NUM_DC   17		// Display command/data pin
 #define PIN_NUM_TCS  25		// Touch screen CS pin (NOT used if USE_TOUCH=0)
 
 // --------------------------------------------------------------
@@ -177,13 +177,13 @@
 // #######################################################################
 // Default display width (smaller dimension) and height (larger dimension)
 // #######################################################################
-#define DEFAULT_TFT_DISPLAY_WIDTH  240
-#define DEFAULT_TFT_DISPLAY_HEIGHT 320
+#define DEFAULT_TFT_DISPLAY_WIDTH  128
+#define DEFAULT_TFT_DISPLAY_HEIGHT 160
 // #######################################################################
 
 #define DEFAULT_GAMMA_CURVE 0
 #define DEFAULT_SPI_CLOCK   26000000
-#define DEFAULT_DISP_TYPE   DISP_TYPE_ILI9341
+#define DEFAULT_DISP_TYPE   DISP_TYPE_ST7735R
 //----------------------------------------------------------------------------
 
 #endif  // CONFIG_EXAMPLE_ESP_WROVER_KIT

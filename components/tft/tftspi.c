@@ -190,10 +190,10 @@ static void IRAM_ATTR disp_spi_transfer_addrwin(uint16_t x1, uint16_t x2, uint16
 
 	disp_spi->host->hw->cmd.usr = 1; // Start transfer
 
-	wd = (uint32_t)(x1>>8);
-	wd |= (uint32_t)(x1&0xff) << 8;
-	wd |= (uint32_t)(x2>>8) << 16;
-	wd |= (uint32_t)(x2&0xff) << 24;
+	wd = (uint32_t)((x1 + 2)>>8);
+	wd |= (uint32_t)((x1 + 2)&0xff) << 8;
+	wd |= (uint32_t)((x2 + 2)>>8) << 16;
+	wd |= (uint32_t)((x2 + 2)&0xff) << 24;
 
 	while (disp_spi->host->hw->cmd.usr); // wait transfer end
 	gpio_set_level(PIN_NUM_DC, 1);
@@ -207,10 +207,10 @@ static void IRAM_ATTR disp_spi_transfer_addrwin(uint16_t x1, uint16_t x2, uint16
 	disp_spi->host->hw->mosi_dlen.usr_mosi_dbitlen = 7;
 	disp_spi->host->hw->cmd.usr = 1; // Start transfer
 
-	wd = (uint32_t)(y1>>8);
-	wd |= (uint32_t)(y1&0xff) << 8;
-	wd |= (uint32_t)(y2>>8) << 16;
-	wd |= (uint32_t)(y2&0xff) << 24;
+	wd = (uint32_t)((y1 + 1)>>8);
+	wd |= (uint32_t)((y1 + 1)&0xff) << 8;
+	wd |= (uint32_t)((y2 + 1)>>8) << 16;
+	wd |= (uint32_t)((y2 + 1)&0xff) << 24;
 
 	while (disp_spi->host->hw->cmd.usr);
 	gpio_set_level(PIN_NUM_DC, 1);
