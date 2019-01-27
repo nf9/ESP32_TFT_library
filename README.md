@@ -1,8 +1,8 @@
 
-### TFT library for ESP32
+### TFT library for TTGO TS V1.2.
 
 ---
-
+**This library is optimized for Eclipse as it has more features compared to Arduino IDE**
 **This library must be built with the latest esp-idf master branch and xtensa toolchain**
 
 If you are using the esp-idf v2.1, checkout the commit *0518df81a6566820352dad7bf6c539995d41ad18*
@@ -10,8 +10,7 @@ If you are using the esp-idf v2.1, checkout the commit *0518df81a6566820352dad7b
 ---
 
 #### Features
-
-* Full support for **ILI9341**, **ILI9488**, **ST7789V** and **ST7735** based TFT modules in 4-wire SPI mode. Support for other controllers will be added later
+* Support for **ST7735** based TFT modules in 4-wire SPI mode. Support for other controllers will be added later
 * **18-bit (RGB)** color mode used
 * **SPI displays oriented SPI driver library** based on *spi-master* driver
 * Combined **DMA SPI** transfer mode and **direct SPI** for maximal speed
@@ -109,7 +108,7 @@ If you are using the esp-idf v2.1, checkout the commit *0518df81a6566820352dad7b
 
 * **Global wariables**
   * **orientation**  current screen orientation
-  * **font_ratate**  current font rotate angle (0~395)
+  * **font_rotate**  current font rotate angle (0~395)
   * **font_transparent**  if not 0 draw fonts transparent
   * **font_forceFixed**  if not zero force drawing proportional fonts with fixed width
   * **text_wrap**  if not 0 wrap long text to the new line, else clip
@@ -137,54 +136,21 @@ Full **demo application**, well documented, is included, please **analyze it** t
 
 ---
 
-#### Connecting the display
+#### Connecting the display - TTGO TS V1.2 specific configuration
 
 | ESP32 pin | Display module | Notes |
 | - | - | - |
-| Any output pin | MOSI | SPI input on Display module |
-| Any pin | MISO | SPI output from Display module, optional |
-| Any output pin | SCK | SPI clock input on Display module |
-| Any output pin | CS  | SPI CS input on Display module |
-| Any output pin | DC  | DC (data/command) input on Display module |
-| Any output pin | TCS  | Touch pannel CS input (if touch panel is used |
-| Any output pin | RST  | **optional**, reset input of the display module, if not used **pullup the reset input** to Vcc |
-| Any output pin | BL  | **optional**, backlight input of the display module, if not used connect to +3.3V (or +5V) |
+| 23 | MOSI | SPI input on Display module |
+| 19 | MISO | SPI output from Display module, optional |
+| 5 | SCK | SPI clock input on Display module |
+| 16 | CS  | SPI CS input on Display module |
+| 17 | DC  | DC (data/command) input on Display module |
 | GND | GND  | Power supply ground |
 | 3.3V or +5V | Vcc  | Power supply positive |
 
 **Make shure the display module has 3.3V compatible interface, if not you must use level shifter!**
 
 ---
-
-To run the demo, attach ILI9341, ILI9488 or ST7735 based display module to ESP32. Default pins used are:
-* mosi: 23
-* miso: 19
-*  sck: 18
-*   CS:  5 (display CS)
-*   DC: 26 (display DC)
-*  TCS: 25 (touch screen CS)
-
----
-
-*To run the demo on* **ESP-WROWER-KIT v3** *select the following pin configuration:*
-*  mosi: 23
-*  miso: 25
-*   sck: 19
-*    CS: 22 (display CS)
-*    DC: 21 (display DC)
-*   TCS:  0 (touch screen CS), not used
-*   RST: 18 (display RESET)
-* BKLIT:  5 (Display Back light)
-
-Also set **TFT_RGB_BGR** to 0x00 and **TFT_INVERT_ROTATION1** to 1 in *tftspi.h*
-
-**You can also select EXAMPLE_ESP_WROVER_KIT in menuconfig to automaticaly define correct configuration**
-
----
-
-**If you want to use different pins, change them in** *tftspi.h*
-
-**if you want to use the touch screen functions, set** `#define USE_TOUCH 1` in *tftspi.h*
 
 Using *make menuconfig* **select tick rate 1000** ( → Component config → FreeRTOS → Tick rate (Hz) ) to get more accurate timings
 
@@ -196,7 +162,7 @@ Configure your esp32 build environment as for **esp-idf examples**
 
 Clone the repository
 
-`git clone https://github.com/loboris/ESP32_TFT_library.git`
+`https://github.com/nf9/TTGO_TS_V1.2_TFT.git`
 
 Execute menuconfig and configure your Serial flash config and other settings. Included *sdkconfig.defaults* sets some defaults to be used.
 
@@ -206,9 +172,14 @@ Select if you want to use **wifi** (recommended) to get the time from **NTP** se
 
 `make menuconfig`
 
+**Now the Eclipse part**. Please follow this link to import the project:
+-Windows 'https://docs.espressif.com/projects/esp-idf/en/stable/get-started/eclipse-setup-windows.html'
+-Linux/Mac 'https://docs.espressif.com/projects/esp-idf/en/stable/get-started/eclipse-setup.html'
+Please note that you need to run make 'make menuconfig' first before buildong on Eclipse. Then, build it from Eclipse so that Eclipse will resolve the path to all your includes. You might need to clean the build if build is already done outside of Eclipse.
+
 Make and flash the example.
 
-`make all && make flash`
+You could add new build target named 'flash' in your Eclipse project to automatically flash your build to the device.
 
 ---
 
@@ -246,127 +217,79 @@ to create **spiffs image** in *build* directory and **flash** it to ESP32
 **Example output:**
 
 ```
+[0;32mI (425) cpu_start: Pro cpu up.[0m
+[0;32mI (428) cpu_start: Application information:[0m
+[0;32mI (433) cpu_start: Project name:     tft_demo[0m
+[0;32mI (438) cpu_start: App version:      2aa16a2[0m
+[0;32mI (443) cpu_start: Compile time:     22:05:18[0m
+[0;32mI (448) cpu_start: Compile date:     Jan 24 2019[0m
+[0;32mI (453) cpu_start: ESP-IDF:          v3.3-beta1-223-ga62cbfe[0m
+[0;32mI (460) cpu_start: Starting app cpu, entry point is 0x40081138[0m
+[0;32mI (0) cpu_start: App cpu up.[0m
+[0;32mI (470) heap_init: Initializing. RAM available for dynamic allocation:[0m
+[0;32mI (477) heap_init: At 3FFAE6E0 len 00001920 (6 KiB): DRAM[0m
+[0;32mI (483) heap_init: At 3FFBBD08 len 000242F8 (144 KiB): DRAM[0m
+[0;32mI (489) heap_init: At 3FFE0440 len 00003AE0 (14 KiB): D/IRAM[0m
+[0;32mI (496) heap_init: At 3FFE4350 len 0001BCB0 (111 KiB): D/IRAM[0m
+[0;32mI (502) heap_init: At 40092D78 len 0000D288 (52 KiB): IRAM[0m
+[0;32mI (508) cpu_start: Pro cpu start user code[0m
+[0;32mI (79) cpu_start: Starting scheduler on PRO CPU.[0m
+[0;32mI (0) cpu_start: Starting scheduler on APP CPU.[0m
 
-I (0) cpu_start: App cpu up.
-I (312) heap_init: Initializing. RAM available for dynamic allocation:
-I (319) heap_init: At 3FFAE6E0 len 00001920 (6 KiB): DRAM
-I (325) heap_init: At 3FFBB0B8 len 00024F48 (147 KiB): DRAM
-I (331) heap_init: At 3FFE0440 len 00003BC0 (14 KiB): D/IRAM
-I (338) heap_init: At 3FFE4350 len 0001BCB0 (111 KiB): D/IRAM
-I (344) heap_init: At 40091F94 len 0000E06C (56 KiB): IRAM
-I (350) cpu_start: Pro cpu start user code
-I (144) cpu_start: Starting scheduler on PRO CPU.
-I (0) cpu_start: Starting scheduler on APP CPU.
 
 ==============================
-TFT display DEMO, LoBo 09/2017
+
+TFT display DEMO, LoBo 11/2017
+
 ==============================
 
-SPI: display device added to spi bus (2)
+Pins used: miso=19, mosi=23, sck=5, cs=16
+
+==============================
+
+
+
+SPI: display device added to spi bus (1)
+
 SPI: attached display device, speed=8000000
+
 SPI: bus uses native pins: false
+
 SPI: display init...
+
 OK
+
+SPI: Max rd speed = 1000000
+
 SPI: Changed speed to 26666666
 
+
+
 ---------------------
+
 Graphics demo started
+
 ---------------------
-I (2815) [TFT Demo]: Time is not set yet. Connecting to WiFi and getting time over NTP.
-I (2845) wifi: wifi firmware version: ee52423
-I (2846) wifi: config NVS flash: enabled
-I (2846) wifi: config nano formating: disabled
-I (2846) system_api: Base MAC address is not set, read default base MAC address from BLK0 of EFUSE
-I (2856) system_api: Base MAC address is not set, read default base MAC address from BLK0 of EFUSE
-I (2890) wifi: Init dynamic tx buffer num: 32
-I (2890) wifi: Init data frame dynamic rx buffer num: 32
-I (2890) wifi: Init management frame dynamic rx buffer num: 32
-I (2894) wifi: wifi driver task: 3ffc83d8, prio:23, stack:4096
-I (2899) wifi: Init static rx buffer num: 10
-I (2903) wifi: Init dynamic rx buffer num: 32
-I (2907) wifi: Init rx ampdu len mblock:7
-I (2911) wifi: Init lldesc rx ampdu entry mblock:4
-I (2916) wifi: wifi power manager task: 0x3ffcd844 prio: 21 stack: 2560
-I (2922) [TFT Demo]: Setting WiFi configuration SSID LoBoInternet...
-I (2951) phy: phy_version: 359.0, e79c19d, Aug 31 2017, 17:06:07, 0, 0
-I (2951) wifi: mode : sta (24:0a:c4:11:a4:0c)
-I (3073) wifi: n:11 0, o:1 0, ap:255 255, sta:11 0, prof:1
-I (3731) wifi: state: init -> auth (b0)
-I (3734) wifi: state: auth -> assoc (0)
-I (3738) wifi: state: assoc -> run (10)
-I (3776) wifi: connected with LoBoInternet, channel 11
-I (5827) event: ip: 192.168.0.21, mask: 255.255.255.0, gw: 192.168.0.1
-I (5828) [TFT Demo]: Initializing SNTP
-I (6331) [TFT Demo]: System time is set.
-I (6331) wifi: state: run -> init (0)
-I (6332) wifi: n:11 0, o:11 0, ap:255 255, sta:11 0, prof:1
-I (6344) wifi: flush txq
-I (6344) wifi: stop sw txq
-I (6344) wifi: lmac stop hw txq
-E (6344) wifi: esp_wifi_connect 836 wifi not start
 
 
-I (8441) [SPIFFS]: Registering SPIFFS file system
-I (8441) [SPIFFS]: Mounting SPIFFS files system
-I (8441) [SPIFFS]: Start address: 0x280000; Size 1024 KB
-I (8447) [SPIFFS]:   Work buffer: 2048 B
-I (8451) [SPIFFS]:    FDS buffer: 384 B
-I (8456) [SPIFFS]:    Cache size: 2048 B
-I (8500) [SPIFFS]: Mounted
+[0;32mI (7517) [SPIFFS]: Registering SPIFFS file system[0m
+[0;32mI (7518) [SPIFFS]: Mounting SPIFFS files system[0m
+[0;32mI (7518) [SPIFFS]: Start address: 0x180000; Size 1024 KB[0m
+[0;32mI (7523) [SPIFFS]:   Work buffer: 2048 B[0m
+[0;32mI (7528) [SPIFFS]:    FDS buffer: 384 B[0m
+[0;32mI (7532) [SPIFFS]:    Cache size: 2048 B[0m
+[0;32mI (7574) [SPIFFS]: Mounted[0m
+
 
 ==========================================
-Display: ILI9488: PORTRAIT 240,320 Color
 
-     Clear screen time: 60 ms
-Send color buffer time: 228 us (240 pixels)
-       JPG Decode time: 287 ms
-    BMP time, scale: 5: 422 ms
-    BMP time, scale: 4: 431 ms
-    BMP time, scale: 3: 430 ms
-    BMP time, scale: 2: 434 ms
-    BMP time, scale: 1: 442 ms
-    BMP time, scale: 0: 335 ms
+Display: ST7735R: PORTRAIT 128,160 Color
 
-==========================================
-Display: ILI9488: LANDSCAPE 320,240 Color
 
-     Clear screen time: 57 ms
-Send color buffer time: 301 us (320 pixels)
-I (126333) event: station ip lost
-       JPG Decode time: 286 ms
-    BMP time, scale: 5: 422 ms
-    BMP time, scale: 4: 431 ms
-    BMP time, scale: 3: 433 ms
-    BMP time, scale: 2: 435 ms
-    BMP time, scale: 1: 444 ms
-    BMP time, scale: 0: 260 ms
 
-==========================================
-Display: ILI9488: PORTRAIT FLIP 240,320 Color
+     Clear screen time: 14 ms
 
-     Clear screen time: 60 ms
-Send color buffer time: 228 us (240 pixels)
-       JPG Decode time: 287 ms
-    BMP time, scale: 5: 420 ms
-    BMP time, scale: 4: 430 ms
-    BMP time, scale: 3: 429 ms
-    BMP time, scale: 2: 436 ms
-    BMP time, scale: 1: 446 ms
-    BMP time, scale: 0: 338 ms
-
-==========================================
-Display: ILI9488: PORTRAIT FLIP 240,320 Color
-
-     Clear screen time: 60 ms
-Send color buffer time: 228 us (240 pixels)
-       JPG Decode time: 287 ms
-    BMP time, scale: 5: 420 ms
-    BMP time, scale: 4: 430 ms
-    BMP time, scale: 3: 429 ms
-    BMP time, scale: 2: 436 ms
-    BMP time, scale: 1: 446 ms
-    BMP time, scale: 0: 338 ms
-
+Send color buffer time: 128 us (128 pixels)
 
 ```
 
@@ -374,15 +297,5 @@ Send color buffer time: 228 us (240 pixels)
 
 ### Tested on
 
-ESP32-WROVER-KIT v3, ST7789V controller, 240x320
-![Tested on](https://raw.githubusercontent.com/loboris/MicroPython_ESP32_psRAM_LoBo/master/Documents/disp_wrower-kit.jpg)
-
-2.4" 240x320 ILI9341 conroller with Touch panel from eBay
-![Tested on](https://raw.githubusercontent.com/loboris/MicroPython_ESP32_psRAM_LoBo/master/Documents/disp_ili9341.jpg)
-
-3.5" 320x480 ILI9844 controller with Touch panel from BuyDisplay
-![Tested on](https://raw.githubusercontent.com/loboris/MicroPython_ESP32_psRAM_LoBo/master/Documents/disp_9488.jpg)
-
-1.8" 128x160 ST7735 conroller from eBay
-![Tested on](https://raw.githubusercontent.com/loboris/MicroPython_ESP32_psRAM_LoBo/master/Documents/disp_7735.jpg)
-
+TTGO TS V1.2 with 1.8in TFT, ST7735 controller, 128x160
+![Tested on](https://github.com/nf9/TTGO_TS_V1.2_TFT/blob/master/Documents/s-l640%5B1%5D.jpg)
