@@ -3,6 +3,7 @@
 
 ---
 **This library is optimized for Eclipse as it has more features compared to Arduino IDE**
+
 **This library must be built with the latest esp-idf master branch and xtensa toolchain**
 
 If you are using the esp-idf v2.1, checkout the commit *0518df81a6566820352dad7bf6c539995d41ad18*
@@ -148,7 +149,7 @@ Full **demo application**, well documented, is included, please **analyze it** t
 | GND | GND  | Power supply ground |
 | 3.3V or +5V | Vcc  | Power supply positive |
 
-**Make shure the display module has 3.3V compatible interface, if not you must use level shifter!**
+**Make sure the display module has 3.3V compatible interface, if not you must use level shifter!**
 
 ---
 
@@ -172,9 +173,11 @@ Select if you want to use **wifi** (recommended) to get the time from **NTP** se
 
 `make menuconfig`
 
-**Now the Eclipse part**. Please follow this link to import the project:
--Windows 'https://docs.espressif.com/projects/esp-idf/en/stable/get-started/eclipse-setup-windows.html'
--Linux/Mac 'https://docs.espressif.com/projects/esp-idf/en/stable/get-started/eclipse-setup.html'
+**Ecipse setup**.
+Please follow this link to import the project to Eclipse:
+* Windows 'https://docs.espressif.com/projects/esp-idf/en/stable/get-started/eclipse-setup-windows.html'
+* Linux/Mac 'https://docs.espressif.com/projects/esp-idf/en/stable/get-started/eclipse-setup.html'
+
 Please note that you need to run make 'make menuconfig' first before buildong on Eclipse. Then, build it from Eclipse so that Eclipse will resolve the path to all your includes. You might need to clean the build if build is already done outside of Eclipse.
 
 Make and flash the example.
